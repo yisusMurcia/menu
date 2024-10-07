@@ -18,6 +18,7 @@ public class View extends JFrame {
     private JTextField categoryField;
     private JTextField priceField;
     private Controller controller;
+    private JButton createAnotherMenuButton;
 
     public View() {
         // Set up the frame
@@ -70,12 +71,14 @@ public class View extends JFrame {
         deleteButton = new JButton("Eliminar");
         modifyButton = new JButton("Modificar");
         showMenuButton = new JButton("Generar Menú predeterminado");
+        createAnotherMenuButton = new JButton("Crear otro menú");
 
         // Add buttons to the panel
         buttonPanel.add(addButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(modifyButton);
         buttonPanel.add(showMenuButton);
+        buttonPanel.add(createAnotherMenuButton);
 
         // Add panels to the frame
         add(tablePanel, BorderLayout.CENTER);
@@ -85,6 +88,14 @@ public class View extends JFrame {
         // Create a Controller object
         Menu menu = new Menu();
         controller = new Controller(menu, this);
+
+        createAnotherMenuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                View anotherView = new View();
+                anotherView.setVisible(true);
+            }
+        });
 
         // Implement event listeners
         addButton.addActionListener(new ActionListener() {
@@ -128,7 +139,7 @@ public class View extends JFrame {
                     // Actualiza la tabla con el plato modificado
                     tableModel.setValueAt(platoNuevo.getName(), row, 0);
                     tableModel.setValueAt(platoNuevo.getDescription(), row, 1);
-                    tableModel.setValueAt(platoNuevo.getCategory().getFirst(), row, 2);
+                    tableModel.setValueAt(platoNuevo.getCategory().get(0), row, 2);
                     tableModel.setValueAt(String.valueOf(platoNuevo.getPrice()), row, 3);
                 }
             }
@@ -138,12 +149,25 @@ public class View extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Plato> platos = new ArrayList<>();
-                platos.add(new Plato("Hamburguesa", "Hamburguesa de carne con queso y verduras", "Comida rápida", 10));
-                platos.add(new Plato("Pizza", "Pizza de queso y pepperoni", "Comida rápida", 12));
-                platos.add(new Plato("Ensalada", "Ensalada de lechuga, tomate y zanahoria", "Ensaladas", 8));
-                platos.add(new Plato("Tacos", "Tacos de carne con salsa y guacamole", "Comida rápida", 11));
-                platos.add(new Plato("Sopa", "Sopa de verduras con pan", "Sopas", 9));
-                mostrarMenu(platos);
+                int menuNum = Menu.getMenuNum();
+                if(menuNum == 2){
+                    platos.add(new Plato("Hamburguesa", "Hamburguesa de carne con queso y verduras", "Comida rápida", 10));
+                    platos.add(new Plato("Pizza", "Pizza de queso y pepperoni", "Comida rápida", 12));
+                    platos.add(new Plato("Ensalada", "Ensalada de lechuga, tomate y zanahoria", "Ensaladas", 8));
+                    platos.add(new Plato("Tacos", "Tacos de carne con salsa y guacamole", "Comida rápida", 11));
+                    platos.add(new Plato("Sopa", "Sopa de verduras con pan", "Sopas", 9));
+                }else{
+                    // Agregar platos de comida china al menú
+                    platos.add(new Plato("Wonton", "Wonton frito con salsa de soja", "Comida china", 8));
+                    platos.add(new Plato("Dumpling", "Dumpling al vapor con salsa de soja", "Comida china", 9));
+                    platos.add(new Plato("Kung Pao", "Pollo con verduras y salsa de soja", "Comida china", 12));
+                    platos.add(new Plato("Lo Mein", "Fideos chinos con verduras y salsa de soja", "Comida china", 10));
+                    platos.add(new Plato("Egg Foo Young", "Tortilla de huevo con verduras y salsa de soja", "Comida china", 11));
+                }
+        // Guarda los platos en el menú
+        for (Plato plato : platos) {
+            controller.agregarPlato(plato);
+        }
             }
         });
     }
@@ -155,7 +179,7 @@ public class View extends JFrame {
     public void mostrarMenu(ArrayList<Plato> platos) {
         tableModel.setRowCount(0);
         for (Plato plato : platos) {
-            tableModel.addRow(new Object[]{plato.getName(), plato.getDescription(), plato.getCategory().getFirst(), String.valueOf(plato.getPrice())});
+            tableModel.addRow(new Object[]{plato.getName(), plato.getDescription(), plato.getCategory().get(0), String.valueOf(plato.getPrice())});
         }
     }
 

@@ -2,9 +2,11 @@ import java.util.ArrayList;
 
 public class Menu {
     private ArrayList<Plato> platos;
+    private static int menuNum = 0;
 
     public Menu() {
         platos = new ArrayList<>();
+        menuNum ++;
     }
 
     /**
@@ -13,8 +15,10 @@ public class Menu {
      * @return true si el plato se agregó con éxito, false si ya existe en el menú
      */
     public boolean agregarPlato(Plato plato) {
-        if (platos.contains(plato)) {
-            return false; // El plato ya existe en el menú
+        for (Plato platoEnMenu : platos) {
+            if(platoEnMenu.getName().equalsIgnoreCase(plato.getName())){
+                return false;
+            }   
         }
         platos.add(plato);
         return true; // El plato se agregó con éxito
@@ -65,5 +69,9 @@ public class Menu {
      */
     public ArrayList<Plato> mostrarMenu() {
         return platos;
+    }
+
+    public static int getMenuNum() {
+        return menuNum;
     }
 }

@@ -150,26 +150,53 @@ public class View extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Plato> platos = new ArrayList<>();
                 int menuNum = Menu.getMenuNum();
-                if(menuNum == 2){
-                    platos.add(new Plato("Hamburguesa", "Hamburguesa de carne con queso y verduras", "Comida rápida", 10));
-                    platos.add(new Plato("Pizza", "Pizza de queso y pepperoni", "Comida rápida", 12));
-                    platos.add(new Plato("Ensalada", "Ensalada de lechuga, tomate y zanahoria", "Ensaladas", 8));
-                    platos.add(new Plato("Tacos", "Tacos de carne con salsa y guacamole", "Comida rápida", 11));
-                    platos.add(new Plato("Sopa", "Sopa de verduras con pan", "Sopas", 9));
-                }else{
-                    // Agregar platos de comida china al menú
-                    platos.add(new Plato("Wonton", "Wonton frito con salsa de soja", "Comida china", 8));
-                    platos.add(new Plato("Dumpling", "Dumpling al vapor con salsa de soja", "Comida china", 9));
-                    platos.add(new Plato("Kung Pao", "Pollo con verduras y salsa de soja", "Comida china", 12));
-                    platos.add(new Plato("Lo Mein", "Fideos chinos con verduras y salsa de soja", "Comida china", 10));
-                    platos.add(new Plato("Egg Foo Young", "Tortilla de huevo con verduras y salsa de soja", "Comida china", 11));
+                switch(menuNum){
+                    case 2:
+                        // Agregar platos de comida china al menú
+                        platos.add(new Plato("Wonton", "Wonton frito con salsa de soja", "Comida china", 8));
+                        platos.add(new Plato("Dumpling", "Dumpling al vapor con salsa de soja", "Comida china", 9));
+                        platos.add(new Plato("Kung Pao", "Pollo con verduras y salsa de soja", "Comida china", 12));
+                        platos.add(new Plato("Lo Mein", "Fideos chinos con verduras y salsa de soja", "Comida china", 10));
+                        platos.add(new Plato("Egg Foo Young", "Tortilla de huevo con verduras y salsa de soja", "Comida china", 11));
+                    break;
+                    case 3:
+                        // Agregar platos de comida italiana al menú
+                        platos.add(new Plato("Spaghetti Bolognese", "Spaghetti con carne de ternera y salsa de tomate", "Comida italiana", 12));
+                        platos.add(new Plato("Pizza Margherita", "Pizza con tomate, mozzarella y albahaca", "Comida italiana", 10));
+                        platos.add(new Plato("Risotto alla Milanese", "Risotto con azafrán y ossobuco", "Comida italiana", 15));
+                        platos.add(new Plato("Pollo alla Cacciatora", "Pollo con champiñones y salsa de tomate", "Comida italiana", 14));
+                        platos.add(new Plato("Tiramisú", "Postre de café y mascarpone", "Comida italiana", 8));
+                        break;
+                    case 4:
+                        // Agregar platos de comida mexicana al menú
+                        platos.add(new Plato("Tacos al pastor", "Tacos con carne de cerdo y salsa de aguacate", "Comida mexicana", 11));
+                        platos.add(new Plato("Enchiladas Rojas", "Tortillas con carne de pollo y salsa de tomate", "Comida mexicana", 12));
+                        platos.add(new Plato("Quesadillas", "Tortillas con queso y salsa de aguacate", "Comida mexicana", 10));
+                        platos.add(new Plato("Chiles Rellenos", "Chiles poblano con queso y salsa de tomate", "Comida mexicana", 14));
+                        platos.add(new Plato("Churros con Cajeta", "Churros con cajeta y canela", "Comida mexicana", 9));
+                        break;
+                    case 5:
+                        // Agregar platos de comida colombiana al menú
+                        platos.add(new Plato("Bandeja Paisa", "Plato típico con carne, chorizo, frijoles, arroz y arepa", "Comida colombiana", 18));
+                        platos.add(new Plato("Ajiaco", "Sopa de pollo con papas, maíz y crema", "Comida colombiana", 12));
+                        platos.add(new Plato("Empanadas", "Empanadas de carne o queso con salsa de aji", "Comida colombiana", 10));
+                        platos.add(new Plato("Lechona", "Cerdo asado con arroz, frijoles y arepa", "Comida colombiana", 16));
+                        platos.add(new Plato("Tamales", "Tamales de maíz con carne o queso y salsa de aji", "Comida colombiana", 14));
+                        break;
+                    default:
+                        //Comida rápida
+                        platos.add(new Plato("Hamburguesa", "Hamburguesa de carne con queso y verduras", "Comida rápida", 10));
+                        platos.add(new Plato("Pizza", "Pizza de queso y pepperoni", "Comida rápida", 12));
+                        platos.add(new Plato("Ensalada", "Ensalada de lechuga, tomate y zanahoria", "Ensaladas", 8));
+                        platos.add(new Plato("Tacos", "Tacos de carne con salsa y guacamole", "Comida rápida", 11));
+                        platos.add(new Plato("Sopa", "Sopa de verduras con pan", "Sopas", 9));
                 }
-        // Guarda los platos en el menú
-        for (Plato plato : platos) {
-            controller.agregarPlato(plato);
-        }
-            }
-        });
+                // Guarda los platos en el menú
+                for (Plato plato : platos) {
+                    controller.agregarPlato(plato);
+                }
+                    }
+                });
     }
 
     public void mostrarMensaje(String mensaje) {

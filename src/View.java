@@ -5,33 +5,87 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-// View.java
+/**
+ * Clase que representa la vista de la aplicación.
+ *
+ * @author Jesús Antonio Murcia
+ */
 public class View extends JFrame {
+    /**
+     * Tabla que muestra los platos del menú.
+     */
     private JTable table;
+
+    /**
+     * Modelo de la tabla.
+     */
     private DefaultTableModel tableModel;
+
+    /**
+     * Botón para agregar un plato al menú.
+     */
     private JButton addButton;
+
+    /**
+     * Botón para eliminar un plato del menú.
+     */
     private JButton deleteButton;
+
+    /**
+     * Botón para modificar un plato del menú.
+     */
     private JButton modifyButton;
+
+    /**
+     * Botón para mostrar el menú predeterminado.
+     */
     private JButton showMenuButton;
+
+    /**
+     * Campo de texto para ingresar el nombre del plato.
+     */
     private JTextField nameField;
+
+    /**
+     * Campo de texto para ingresar la descripción del plato.
+     */
     private JTextArea descriptionField;
+
+    /**
+     * Campo de texto para ingresar la categoría del plato.
+     */
     private JTextField categoryField;
+
+    /**
+     * Campo de texto para ingresar el precio del plato.
+     */
     private JTextField priceField;
+
+    /**
+     * Controlador de la aplicación.
+     */
     private Controller controller;
+
+    /**
+     * Botón para crear otro menú.
+     */
     private JButton createAnotherMenuButton;
 
+    /**
+     * Constructor que inicializa la vista.
+     */
     public View() {
-        // Set up the frame
+        // Configura la ventana principal
         setTitle("Restaurant Menu Management System");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Create a panel for the table
+        // Crea un panel para la tabla
         JPanel tablePanel = new JPanel();
         tablePanel.setLayout(new BorderLayout());
 
-        // Create a table model and table
+        // Crea un modelo de tabla y una tabla
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Nombre");
         tableModel.addColumn("Descripción");
@@ -39,20 +93,20 @@ public class View extends JFrame {
         tableModel.addColumn("Precio");
         table = new JTable(tableModel);
 
-        // Add the table to the panel
+        // Agrega la tabla al panel
         tablePanel.add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // Create a panel for the input fields
+        // Crea un panel para los campos de texto
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(4, 2));
 
-        // Create input fields
+        // Crea los campos de texto
         nameField = new JTextField();
         descriptionField = new JTextArea(5, 20);
         categoryField = new JTextField();
         priceField = new JTextField();
 
-        // Add input fields to the panel
+        // Agrega los campos de texto al panel
         inputPanel.add(new JLabel("Nombre:"));
         inputPanel.add(nameField);
         inputPanel.add(new JLabel("Descripción:"));
@@ -62,95 +116,110 @@ public class View extends JFrame {
         inputPanel.add(new JLabel("Precio:"));
         inputPanel.add(priceField);
 
-        // Create a panel for the buttons
+        // Crea un panel para los botones
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
-        // Create buttons
+        // Crea los botones
         addButton = new JButton("Agregar");
         deleteButton = new JButton("Eliminar");
         modifyButton = new JButton("Modificar");
         showMenuButton = new JButton("Generar Menú predeterminado");
         createAnotherMenuButton = new JButton("Crear otro menú");
 
-        // Add buttons to the panel
+        // Agrega los botones al panel
         buttonPanel.add(addButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(modifyButton);
         buttonPanel.add(showMenuButton);
         buttonPanel.add(createAnotherMenuButton);
 
-        // Add panels to the frame
+        // Agrega los paneles a la ventana principal
         add(tablePanel, BorderLayout.CENTER);
         add(inputPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Create a Controller object
+        // Crea un objeto Controlador
         Menu menu = new Menu();
         controller = new Controller(menu, this);
 
+        // Agrega un oyente de eventos al botón "Crear otro menú"
         createAnotherMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Crea una nueva ventana
                 View anotherView = new View();
                 anotherView.setVisible(true);
             }
         });
 
-        // Implement event listeners
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(checkPriceField()) {
-                    String name = nameField.getText();
-                    String description = descriptionField.getText();
-                    String category = categoryField.getText();
-                    int price = Integer.parseInt(priceField.getText());
-                    Plato plato = new Plato(name, description, category, price);
-                    controller.agregarPlato(plato);
-                }
-            }
-        });
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    Plato plato = new Plato((String) tableModel.getValueAt(row, 0), (String) tableModel.getValueAt(row, 1), (String) tableModel.getValueAt(row, 2),  Integer.parseInt((String)tableModel.getValueAt(row, 3)));
-                    controller.eliminarPlato(plato);
-                    tableModel.removeRow(row);
-                }
+// Implementa los oyentes de eventos para los botones
+addButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Verifica si el campo de texto del precio es válido
+            if (checkPriceField()) {
+                // Obtiene los valores de los campos de texto
+                String name = nameField.getText();
+                String description = descriptionField.getText();
+                String category = categoryField.getText();
+                int price = Integer.parseInt(priceField.getText());
+                // Crea un objeto Plato con los valores obtenidos
+                Plato plato = new Plato(name, description, category, price);
+                // Agrega el plato al menú mediante el controlador
+                controller.agregarPlato(plato);
             }
-        });
+        }
+    });
 
-        modifyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = table.getSelectedRow();
-                if (row != -1) {
-                    String name = nameField.getText();
-                    String description = descriptionField.getText();
-                    String category = categoryField.getText();
-                    int price = Integer.parseInt(priceField.getText());
-                    Plato platoAntiguo = new Plato((String) tableModel.getValueAt(row, 0), (String) tableModel.getValueAt(row, 1), (String) tableModel.getValueAt(row, 2), Integer.parseInt((String) tableModel.getValueAt(row, 3)));
-                    Plato platoNuevo = new Plato(name, description, category, price);
-                    controller.modificarPlato(platoAntiguo, platoNuevo);
-                    // Actualiza la tabla con el plato modificado
-                    tableModel.setValueAt(platoNuevo.getName(), row, 0);
-                    tableModel.setValueAt(platoNuevo.getDescription(), row, 1);
-                    tableModel.setValueAt(platoNuevo.getCategory().get(0), row, 2);
-                    tableModel.setValueAt(String.valueOf(platoNuevo.getPrice()), row, 3);
-                }
+deleteButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Obtiene la fila seleccionada en la tabla
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                // Crea un objeto Plato con los valores de la fila seleccionada
+                Plato plato = new Plato((String) tableModel.getValueAt(row, 0), (String) tableModel.getValueAt(row, 1), (String) tableModel.getValueAt(row, 2), Integer.parseInt((String) tableModel.getValueAt(row, 3)));
+                // Elimina el plato del menú mediante el controlador
+                controller.eliminarPlato(plato);
+                // Elimina la fila de la tabla
+                tableModel.removeRow(row);
             }
-        });
+        }
+    });
+
+modifyButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Obtiene la fila seleccionada en la tabla
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                // Obtiene los valores de los campos de texto
+                String name = nameField.getText();
+                String description = descriptionField.getText();
+                String category = categoryField.getText();
+                int price = Integer.parseInt(priceField.getText());
+                // Crea un objeto Plato con los valores obtenidos
+                Plato platoAntiguo = new Plato((String) tableModel.getValueAt(row, 0), (String) tableModel.getValueAt(row, 1), (String) tableModel.getValueAt(row, 2), Integer.parseInt((String) tableModel.getValueAt(row, 3)));
+                Plato platoNuevo = new Plato(name, description, category, price);
+                // Modifica el plato en el menú mediante el controlador
+                controller.modificarPlato(platoAntiguo, platoNuevo);
+                // Actualiza la tabla con el plato modificado
+                tableModel.setValueAt(platoNuevo.getName(), row, 0);
+                tableModel.setValueAt(platoNuevo.getDescription(), row, 1);
+                tableModel.setValueAt(platoNuevo.getCategory().get(0), row, 2);
+                tableModel.setValueAt(String.valueOf(platoNuevo.getPrice()), row, 3);
+            }
+        }
+    });
 
         showMenuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<Plato> platos = new ArrayList<>();
                 int menuNum = Menu.getMenuNum();
-                switch(menuNum){
+                switch (menuNum) {
                     case 2:
                         // Agregar platos de comida china al menú
                         platos.add(new Plato("Wonton", "Wonton frito con salsa de soja", "Comida china", 8));
@@ -158,7 +227,7 @@ public class View extends JFrame {
                         platos.add(new Plato("Kung Pao", "Pollo con verduras y salsa de soja", "Comida china", 12));
                         platos.add(new Plato("Lo Mein", "Fideos chinos con verduras y salsa de soja", "Comida china", 10));
                         platos.add(new Plato("Egg Foo Young", "Tortilla de huevo con verduras y salsa de soja", "Comida china", 11));
-                    break;
+                        break;
                     case 3:
                         // Agregar platos de comida italiana al menú
                         platos.add(new Plato("Spaghetti Bolognese", "Spaghetti con carne de ternera y salsa de tomate", "Comida italiana", 12));
@@ -195,8 +264,8 @@ public class View extends JFrame {
                 for (Plato plato : platos) {
                     controller.agregarPlato(plato);
                 }
-                    }
-                });
+            }
+        });
     }
 
     public void mostrarMensaje(String mensaje) {
@@ -220,7 +289,7 @@ public class View extends JFrame {
             return false;
         }
     }
-
+    //Verificar que el precio sea numérico
     private boolean checkPriceField() {
         String price = priceField.getText();
         if (!isNumeric(price)) {
@@ -230,5 +299,4 @@ public class View extends JFrame {
 
         return isNumeric(price);
     }
-
 }
